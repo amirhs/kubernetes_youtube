@@ -12,10 +12,10 @@ spec:
         app: random-number-api
     spec:
       containers:
-      - name: random-number-api
-        image: aaghamohammadi/random-number-api:1.0.0
-        ports:
-        - containerPort: 5000
-        envFrom:
-        - configMapRef:
-            name: random-api-config
+        - name: random-number-api
+          image: aaghamohammadi/random-number-api:1.0.0
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: random-api-config

@@ -1,3 +1,5 @@
+This tutorial demonstrates how to use a ConfigMap in a Kubernetes deployment. The steps include creating a ConfigMap from a file, updating a Deployment to use it, and verifying the ConfigMap values in a container.
+
 ## Step 1: Create a ConfigMap File
 
 Create a directory named `configmap` and a file `config.env` with the following content:
@@ -61,11 +63,55 @@ beta
 random-number-generator
 ```
 
-## Step 5: Clean Up
+---
 
-To delete the ConfigMap and the Deployment, run the following commands:
+## Step 5: Use Specific ConfigMap Keys in Another Deployment
+
+To use a specific key (e.g., `STATUS`) from the `random-api-config` ConfigMap in another deployment, update the `env` section of the deployment YAML file (e.g., `random-number-client-deployment.yaml`) as follows:
+
+```yaml
+        env:
+        - name: STATUS
+          valueFrom:
+            configMapKeyRef:
+              name: random-api-config
+              key: STATUS
+```
+
+Apply the updated deployment:
+
+```bash
+kubectl apply -f random-number-client-deployment.yaml
+```
+
+Verify the `STATUS` environment variable in the new pod:
+
+1. Get a shell into one of the pods in the client deployment:
+
+   ```bash
+   kubectl exec -it deploy/random-number-client-deployment -- sh
+   ```
+
+2. Print the `STATUS` environment variable:
+
+   ```bash
+   printenv STATUS
+   ```
+
+You should see the following output:
+
+```plaintext
+beta
+```
+
+---
+
+## Step 6: Clean Up
+
+To delete the ConfigMap and the Deployments, run the following commands:
 
 ```bash
 kubectl delete configmap random-api-config
 kubectl delete -f random-number-api-deployment.yaml
+kubectl delete -f random-number-client-deployment.yaml
 ```
