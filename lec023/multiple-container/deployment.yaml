@@ -21,11 +21,11 @@ spec:
               mountPath: /logs
           resources:
             requests:
-              cpu: 2m
-              memory: 40Mi
+              cpu: 20m
+              memory: 50Mi
             limits:
-              cpu: 10m 
-              memory: 80Mi
+              cpu: 50m 
+              memory: 100Mi
         - name: fluentd-sidecar
           image: fluent/fluentd:v1.16-1
           command: ["fluentd"]
